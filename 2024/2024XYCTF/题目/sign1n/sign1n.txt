@@ -1,0 +1,42 @@
+from Crypto.Util.number import *
+from tqdm import *
+import gmpy2
+flag=b'XYCTF{uuid}'
+flag=bytes_to_long(flag)
+leak=bin(int(flag))
+while 1:
+    leak += "0"
+    if len(leak) == 514:
+        break
+
+def swap_bits(input_str):
+    input_list = list(input_str[2:])
+    length = len(input_list)
+
+    for i in range(length // 2):
+        temp = input_list[i]
+        input_list[i] = input_list[length - 1 - i]
+        input_list[length - 1 - i] = temp
+
+    return ''.join(input_list)
+
+input_str = leak
+result = swap_bits(input_str)
+a=result
+
+def custom_add(input_str):
+    input_list = list(input_str)
+    length = len(input_list)
+    
+    for i in range(length):
+        input_list[i] = str((int(input_list[i]) + i + 1) % 10)
+
+    result = ''.join(input_list)
+    return result
+
+
+input_str = a
+result = custom_add(input_str)
+b=result
+print(b)
+#12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456799123455679902334667900133557889013356679001344568990233467780112346788902234677990134456899023356779001335668890123566780113445778912234568900133566889113346779011344577990233457790013356688911334677991124557780122355678011335668890124566789112455689902335567801134557889113356678902344567801223566890113455689911234677891224556899023
